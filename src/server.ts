@@ -116,4 +116,29 @@ app.post("/games/:id/ads", async (request, response) => {
     return response.status(201).json(ad);
 });
 
+/**
+ * @description Get Game
+ */
+app.get("/games/:id/ads", async (request, response) => {
+    const gameId: any = request.params.id;
+    const ads: any = await prisma.ad.findMany({
+        select: {
+            id: true,
+            name: true,
+            weekDays: true,
+            useVoiceChannel: true,
+            yearsPlaying: true,
+            hoursStart: true,
+            hoursEnd: true,
+        },
+        where: {
+            gameId,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+    return response.status(200).json(ads);
+});
+
 app.listen(3333);
